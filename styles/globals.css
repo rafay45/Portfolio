@@ -164,27 +164,31 @@ nav.open {
   top: 0;
   left: 0;
   width: 280px;
-  background: rgba(10,12,14,0.98);
-  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, rgba(10,14,18,0.98) 0%, rgba(15,20,28,0.98) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   height: 100vh;
   display: flex !important;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding-top: 80px;
+  padding-top: 100px;
   padding-left: 32px;
-  gap: 20px;
+  gap: 16px;
   z-index: 125;
-  border-right: 1px solid rgba(14, 165, 233, 0.2);
-  animation: slideInFromLeft 0.3s ease-out;
+  border-right: 2px solid rgba(14, 165, 233, 0.3);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+  animation: slideInFromLeft 0.3s ease-out forwards;
+  transform: translateX(0);
+  opacity: 1;
 }
 
 @keyframes slideInFromLeft {
-  from {
+  0% {
     transform: translateX(-100%);
     opacity: 0;
   }
-  to {
+  100% {
     transform: translateX(0);
     opacity: 1;
   }
@@ -197,6 +201,10 @@ nav.open a {
   border-radius: 8px;
   transition: all 0.3s ease;
   width: 200px;
+}
+
+nav.open a:first-child {
+  margin-top: 70px;
 }
 
 nav.open a:hover {
