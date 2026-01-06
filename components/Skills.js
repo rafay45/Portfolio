@@ -19,6 +19,15 @@ const skillCategories = [
   }
 ]
 
+// Add CMS / e-commerce skills with brief detail tags
+skillCategories.push({
+  category: 'CMS & E-commerce',
+  skills: [
+    'WordPress (theme/plugin development, WooCommerce)',
+    'Shopify (Liquid, theme customization, app integrations)'
+  ]
+})
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {

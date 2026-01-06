@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import ProjectCard from '../components/ProjectCard'
 import Skills from '../components/Skills'
 import Reviews from '../components/Reviews'
+import React, { useEffect, useState } from 'react'
 
 const projects = [
   {
@@ -68,6 +69,39 @@ const itemVariants = {
 }
 
 export default function Home() {
+  // Looping counter component
+  function LoopingNumber({ target = 0, duration = 1500, suffix = '' }) {
+    const [value, setValue] = useState(0)
+
+    useEffect(() => {
+      let start = 0
+      let mounted = true
+      const step = Math.max(1, Math.floor(target / 30))
+      const tick = () => {
+        start += step
+        if (!mounted) return
+        if (start >= target) {
+          setValue(target)
+          // reset after a short pause to loop
+          setTimeout(() => {
+            if (!mounted) return
+            setValue(0)
+            start = 0
+          }, 800)
+        } else {
+          setValue(start)
+        }
+      }
+
+      const iv = setInterval(tick, Math.max(20, Math.floor(duration / (target || 1))))
+      return () => {
+        mounted = false
+        clearInterval(iv)
+      }
+    }, [target, duration])
+
+    return <>{value}{suffix}</>
+  }
   return (
     <div className="container">
       <motion.section
@@ -139,7 +173,7 @@ export default function Home() {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <h3>5+</h3>
+            <h3><LoopingNumber target={3} suffix="+" /></h3>
             <p>Years Experience</p>
           </motion.div>
           <motion.div
@@ -147,7 +181,7 @@ export default function Home() {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <h3>50+</h3>
+            <h3><LoopingNumber target={50} suffix="+" /></h3>
             <p>Projects Completed</p>
           </motion.div>
           <motion.div
@@ -155,7 +189,7 @@ export default function Home() {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <h3>100%</h3>
+            <h3><LoopingNumber target={100} suffix="%" /></h3>
             <p>Client Satisfaction</p>
           </motion.div>
         </div>
@@ -198,48 +232,25 @@ export default function Home() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2>Let&apos;s Work Together</h2>
-        <p className="contact-text">
-          I&apos;m currently available for freelance projects and full-time opportunities.
-          Whether you need a complete application built from scratch, API development,
-          or help scaling your existing platform, I&apos;d love to hear from you.
-        </p>
-        <div className="contact-methods">
-          <motion.a
-            className="contact-card"
-            href="https://www.upwork.com/freelancers/yourprofile"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.03, y: -5 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <span className="icon">💼</span>
-            <h3>Upwork</h3>
-            <p>Hire me on Upwork</p>
-          </motion.a>
-          <motion.a
-            className="contact-card"
-            href="mailto:your.email@example.com"
-            whileHover={{ scale: 1.03, y: -5 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <span className="icon">✉️</span>
-            <h3>Email</h3>
-            <p>your.email@example.com</p>
-          </motion.a>
-          <motion.a
-            className="contact-card"
-            href="https://linkedin.com/in/yourprofile"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.03, y: -5 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <span className="icon">🔗</span>
-            <h3>LinkedIn</h3>
-            <p>Connect with me</p>
-          </motion.a>
-        </div>
+        <h2>Contact</h2>
+
+        <form
+          className="contact-form"
+          onSubmit={(e) => {
+            e.preventDefault()
+            const form = e.currentTarget
+            const subject = form.subject.value || 'Contact from portfolio'
+            const body = form.message.value || ''
+            const mailto = `mailto:rafayy579@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+            window.location.href = mailto
+          }}
+        >
+          <input name="subject" type="text" placeholder="Subject" required />
+          <textarea name="message" rows={6} placeholder="Your message" required />
+          <div style={{ marginTop: 20 }}>
+            <button type="submit" className="cta primary">Send</button>
+          </div>
+        </form>
       </motion.section>
     </div>
   )

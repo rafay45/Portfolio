@@ -60,6 +60,9 @@ body {
   flex: 0 0 200px;
 }
 
+  /* reduce logo left width so header github fits on right without overlap */
+  .site-header .logo { flex: 0 0 160px; }
+
 .site-header .logo a {
   text-decoration: none;
   transition: all 0.3s ease;
@@ -87,6 +90,27 @@ body {
   left: 50%;
   transform: translateX(-50%);
 }
+
+/* GitHub icon positioned at top-right of header */
+.header-github {
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: rgba(14,165,233,0.95);
+  color: var(--black);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(14,165,233,0.22);
+  text-decoration: none;
+  z-index: 120;
+}
+
+.header-github svg { color: var(--black); width: 22px; height: 22px; }
 
 .site-header nav a {
   color: var(--muted);
@@ -120,6 +144,25 @@ body {
   z-index: 10;
 }
 
+.github-btn svg { color: var(--black); }
+
+/* make github nav button compact and not take large pill space */
+.nav-reviews-btn.github-btn {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  padding: 6px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue);
+  color: var(--black);
+  box-shadow: 0 6px 20px rgba(14,165,233,0.22);
+}
+
+.nav-reviews-btn.github-btn svg { width: 22px; height: 22px; }
+
 .nav-reviews-btn:hover {
   background: var(--blue-light);
   color: var(--black);
@@ -128,7 +171,12 @@ body {
 }
 
 .hero {
-  padding: 120px 0 80px;
+  min-height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
   text-align: center;
   position: relative;
 }
@@ -442,8 +490,8 @@ body {
 }
 
 .contact {
-  margin-top: 120px;
-  padding: 80px 40px;
+  margin-top: 60px;
+  padding: 60px 24px;
   background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(14, 165, 233, 0.02) 100%);
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -588,6 +636,8 @@ body {
     margin-left: 0;
   }
 
+  .github-btn { padding: 8px 14px; }
+
   .about, .contact {
     padding: 40px 24px;
   }
@@ -618,6 +668,95 @@ body {
   margin-top: 120px;
   padding: 60px 0;
 }
+
+.reviews-github {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 36px 0 8px;
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 140px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  color: var(--white);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.github-link:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(14,165,233,0.12);
+  color: var(--blue-light);
+}
+
+.contact-form {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.35);
+  color: var(--white);
+  font-size: 1rem;
+}
+
+.contact-form textarea { resize: vertical; }
+
+/* Scroll-to-top button */
+.scroll-top {
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(14,165,233,0.08);
+  border: 2px solid rgba(255,255,255,0.06);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  z-index: 200;
+}
+
+.scroll-top.visible {
+  transform: translateY(0);
+  opacity: 1;
+  box-shadow: 0 12px 36px rgba(14,165,233,0.14);
+}
+
+.scroll-top .arrow { font-size: 20px; font-weight: 700; }
+
+@media (max-width: 768px) {
+  .scroll-top { right: 16px; bottom: 18px; width: 48px; height: 48px; }
+}
+
+  /* pulsing border while visible */
+  @keyframes pulseBorder {
+    0% { box-shadow: 0 8px 20px rgba(14,165,233,0.08); }
+    50% { box-shadow: 0 12px 36px rgba(14,165,233,0.20); }
+    100% { box-shadow: 0 8px 20px rgba(14,165,233,0.08); }
+  }
+
+  .scroll-top.visible { animation: pulseBorder 1.6s ease-in-out infinite; }
 
 .reviews-section h2 {
   font-size: 2.5rem;
