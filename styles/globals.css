@@ -5,7 +5,7 @@
   --black: #0a0e12;
   --black-light: #1a1f26;
   --white: #ffffff;
-  --muted: #94a3b8;
+  --muted: #ffffff;
   --muted-dark: #64748b;
 }
 
@@ -90,7 +90,7 @@ body {
 }
 
 .site-header .logo-text {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 800;
   letter-spacing: 1px;
   color: var(--white);
@@ -114,13 +114,13 @@ body {
 
 /* Hamburger and mobile nav styles */
 .hamburger {
-  display: flex; /* show hamburger on mobile and place it left */
+  display: none;
   position: absolute;
   left: 18px;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 30px;
+  width: 32px;
+  height: 24px;
   background: transparent;
   border: none;
   z-index: 130;
@@ -128,8 +128,29 @@ body {
   flex-direction: column;
   justify-content: space-between;
 }
-.hamburger span { display: block; height: 3px; background: var(--muted); border-radius: 3px; }
-.hamburger.open span { background: var(--blue); }
+.hamburger span {
+  display: block;
+  height: 2.5px;
+  background: var(--muted);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: translateY(8.75px) rotate(45deg);
+  background: var(--blue);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+  background: var(--blue);
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-8.75px) rotate(-45deg);
+  background: var(--blue);
+}
 
 .nav-backdrop {
   position: fixed;
@@ -142,18 +163,51 @@ nav.open {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
+  width: 280px;
   background: rgba(10,12,14,0.98);
+  backdrop-filter: blur(10px);
   height: 100vh;
-  display: flex;
+  display: flex !important;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 80px;
+  padding-left: 32px;
+  gap: 20px;
   z-index: 125;
+  border-right: 1px solid rgba(14, 165, 233, 0.2);
+  animation: slideInFromLeft 0.3s ease-out;
 }
 
-nav.open a { font-size: 1.4rem; color: var(--white); }
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+nav.open a {
+  font-size: 1.1rem;
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  width: 200px;
+}
+
+nav.open a:hover {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--blue-light);
+}
+
+nav.open a.active {
+  background: rgba(14, 165, 233, 0.15);
+  color: var(--blue-light);
+}
 
 /* GitHub icon positioned at top-right of header */
 .header-github {
@@ -188,6 +242,11 @@ nav.open a { font-size: 1.4rem; color: var(--white); }
 }
 
 .site-header nav a:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.site-header nav a.active {
   color: var(--white);
   background: rgba(255, 255, 255, 0.05);
 }
@@ -328,7 +387,7 @@ nav.open a { font-size: 1.4rem; color: var(--white); }
   padding: 60px;
   background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(14, 165, 233, 0.02) 100%);
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #0284c7;
 }
 
 .about h2 {
@@ -407,13 +466,13 @@ nav.open a { font-size: 1.4rem; color: var(--white); }
   padding: 32px;
   background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(14, 165, 233, 0.02) 100%);
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #0284c7;
   transition: all 0.3s ease;
 }
 
 .skill-category:hover {
-  border-color: rgba(14, 165, 233, 0.2);
-  box-shadow: 0 8px 32px rgba(14, 165, 233, 0.1);
+  border-color: #0284c7;
+  box-shadow: 0 8px 32px #09415e;
 }
 
 .skill-category h3 {
@@ -689,7 +748,11 @@ nav.open a { font-size: 1.4rem; color: var(--white); }
     flex-wrap: wrap;
     order: 2;
     flex: 1 1;
-    display: none;
+    display: none !important;
+  }
+
+  .site-header nav.open {
+    display: flex !important;
   }
 
   .site-header nav a {
@@ -706,11 +769,12 @@ nav.open a { font-size: 1.4rem; color: var(--white); }
 
   .github-btn { padding: 8px 14px; }
 
-  .hamburger { display: flex; order: 1; }
+  .hamburger { display: flex; order: 1; position: relative; left: auto; top: auto; transform: none; width: 32px; }
 
   /* center logo and place GitHub icon to the right */
   .site-header .logo { order: 2; flex: 1 1; text-align: center; }
-  .header-github { position: relative; order: 3; right: auto; left: auto; top: auto; transform: none; margin-left: 0; margin-right: 8px; }
+  .header-github { position: relative; order: 3; right: auto; left: auto; top: auto; transform: none; margin-left: 0; width: 36px; height: 36px; }
+  .header-github svg { width: 18px; height: 18px; }
 
   .about, .contact {
     padding: 40px 24px;
@@ -875,27 +939,6 @@ nav.open a { font-size: 1.4rem; color: var(--white); }
   gap: 16px;
   margin-bottom: 16px;
 }
-  /* mobile overlay: slide in from the right with fade */
-  nav {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100vh;
-    width: 82%;
-    max-width: 420px;
-    background: rgba(10,12,14,0.98);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    padding: 40px 24px;
-    transform: translateX(100%);
-    opacity: 0;
-    transition: transform 360ms cubic-bezier(.2,.9,.2,1), opacity 360ms ease;
-    z-index: 125;
-  }
-
 
 .review-avatar {
   width: 56px;

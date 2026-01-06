@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export default function Header() {
   const [open, setOpen] = useState(false)
+  const [activeLink, setActiveLink] = useState('/')
 
   return (
     <motion.header
@@ -35,12 +36,12 @@ export default function Header() {
       </motion.div>
 
       <nav className={open ? 'open' : ''}>
-        <a href="/" onClick={() => setOpen(false)}>Home</a>
-        <a href="#about" onClick={() => setOpen(false)}>About</a>
-        <a href="#skills" onClick={() => setOpen(false)}>Skills</a>
-        <a href="#projects" onClick={() => setOpen(false)}>Case Studies</a>
-        <a href="#contact" onClick={() => setOpen(false)}>Contact</a>
-        <a href="#reviews" onClick={() => setOpen(false)}>Reviews</a>
+        <a href="/" className={activeLink === '/' ? 'active' : ''} onClick={() => { setActiveLink('/'); setOpen(false); }}>Home</a>
+        <a href="#about" className={activeLink === '#about' ? 'active' : ''} onClick={() => { setActiveLink('#about'); setOpen(false); }}>About</a>
+        <a href="#skills" className={activeLink === '#skills' ? 'active' : ''} onClick={() => { setActiveLink('#skills'); setOpen(false); }}>Skills</a>
+        <a href="#projects" className={activeLink === '#projects' ? 'active' : ''} onClick={() => { setActiveLink('#projects'); setOpen(false); }}>Case Studies</a>
+        <a href="#contact" className={activeLink === '#contact' ? 'active' : ''} onClick={() => { setActiveLink('#contact'); setOpen(false); }}>Contact</a>
+        <a href="#reviews" className={activeLink === '#reviews' ? 'active' : ''} onClick={() => { setActiveLink('#reviews'); setOpen(false); }}>Reviews</a>
       </nav>
       
       <motion.a

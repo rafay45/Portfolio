@@ -98,24 +98,30 @@ const ReviewCard = ({ review, index, disableAnimation }) => {
 export default function Reviews() {
   const controls = useAnimation()
 
-  const startAnim = () => {
+  useEffect(() => {
     controls.start({
-      x: ['0%', '-50%'],
+      x: '-50%',
       transition: {
-        x: {
-          repeat: Infinity,
-          repeatType: 'loop',
-          duration: 30,
-          ease: 'linear'
-        }
+        duration: 30,
+        repeat: Infinity,
+        repeatType: 'loop',
+        ease: 'linear'
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const resumeAnimation = () => {
+    controls.start({
+      x: '-50%',
+      transition: {
+        duration: 30,
+        repeat: Infinity,
+        repeatType: 'loop',
+        ease: 'linear'
       }
     })
   }
-
-  useEffect(() => {
-    startAnim()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <motion.section
@@ -134,7 +140,7 @@ export default function Reviews() {
           className="reviews-scroll"
           animate={controls}
           onHoverStart={() => controls.stop()}
-          onHoverEnd={() => startAnim()}
+          onHoverEnd={resumeAnimation}
         >
           {[...reviews, ...reviews].map((review, index) => (
             <ReviewCard key={`${review.id}-${index}`} review={review} index={index % reviews.length} disableAnimation={true} />
