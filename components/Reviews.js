@@ -128,11 +128,7 @@ export default function Reviews() {
         </motion.div>
       </div>
 
-      <div className="reviews-grid">
-        {reviews.map((review, index) => (
-          <ReviewCard key={review.id} review={review} index={index} disableAnimation={false} />
-        ))}
-      </div>
+      {/* Removed static reviews grid to show only the scrolling reviews */}
     </motion.section>
   )
 }
