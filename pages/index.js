@@ -69,38 +69,37 @@ const itemVariants = {
 }
 
 export default function Home() {
-  // Looping counter component
-  function LoopingNumber({ target = 0, duration = 1500, suffix = '' }) {
+  // Counter that animates once when it becomes visible
+  function LoopingNumber({ target = 0, duration = 1200, suffix = '' }) {
     const [value, setValue] = useState(0)
+    const ref = React.useRef()
+    const ranRef = React.useRef(false)
 
-    useEffect(() => {
-      let start = 0
-      let mounted = true
-      const step = Math.max(1, Math.floor(target / 30))
-      const tick = () => {
-        start += step
-        if (!mounted) return
-        if (start >= target) {
-          setValue(target)
-          // reset after a short pause to loop
-          setTimeout(() => {
-            if (!mounted) return
-            setValue(0)
-            start = 0
-          }, 800)
-        } else {
-          setValue(start)
-        }
-      }
-
-      const iv = setInterval(tick, Math.max(20, Math.floor(duration / (target || 1))))
-      return () => {
-        mounted = false
-        clearInterval(iv)
-      }
+    React.useEffect(() => {
+      if (!ref.current) return
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !ranRef.current) {
+            ranRef.current = true
+            const start = Date.now()
+            const from = 0
+            const to = target
+            const raf = () => {
+              const now = Date.now()
+              const t = Math.min(1, (now - start) / duration)
+              const current = Math.round(from + (to - from) * t)
+              setValue(current)
+              if (t < 1) requestAnimationFrame(raf)
+            }
+            requestAnimationFrame(raf)
+          }
+        })
+      }, { threshold: 0.2 })
+      obs.observe(ref.current)
+      return () => obs.disconnect()
     }, [target, duration])
 
-    return <>{value}{suffix}</>
+    return <span ref={ref}>{value}{suffix}</span>
   }
   return (
     <div className="container">

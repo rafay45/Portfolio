@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { motion, useAnimation } from 'framer-motion'
+import { useEffect } from 'react'
 
 const reviews = [
   {
@@ -95,6 +96,27 @@ const ReviewCard = ({ review, index, disableAnimation }) => {
 }
 
 export default function Reviews() {
+  const controls = useAnimation()
+
+  const startAnim = () => {
+    controls.start({
+      x: ['0%', '-50%'],
+      transition: {
+        x: {
+          repeat: Infinity,
+          repeatType: 'loop',
+          duration: 30,
+          ease: 'linear'
+        }
+      }
+    })
+  }
+
+  useEffect(() => {
+    startAnim()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <motion.section
       id="reviews"
@@ -110,17 +132,9 @@ export default function Reviews() {
       <div className="reviews-scroll-container">
         <motion.div
           className="reviews-scroll"
-          animate={{
-            x: ['0%', '-50%'],
-          }}
-          transition={{
-            x: {
-              repeat: Infinity,
-              repeatType: "loop",
-              duration: 30,
-              ease: "linear",
-            },
-          }}
+          animate={controls}
+          onHoverStart={() => controls.stop()}
+          onHoverEnd={() => startAnim()}
         >
           {[...reviews, ...reviews].map((review, index) => (
             <ReviewCard key={`${review.id}-${index}`} review={review} index={index % reviews.length} disableAnimation={true} />

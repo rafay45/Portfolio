@@ -9,6 +9,24 @@
   --muted-dark: #64748b;
 }
 
+/* ensure header children render above the Vanta canvas */
+.site-header > *,
+.hero > * {
+  position: relative;
+  z-index: 2;
+}
+
+.vanta-header-canvas,
+.vanta-top-canvas {
+  will-change: transform;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -22,6 +40,9 @@ html {
 html, body, #root {
   height: 100%;
 }
+
+/* ensure anchor targets sit below the fixed header */
+[id] { scroll-margin-top: calc(var(--header-height, 88px) + 15px); }
 
 body {
   margin: 0;
@@ -91,11 +112,54 @@ body {
   transform: translateX(-50%);
 }
 
+/* Hamburger and mobile nav styles */
+.hamburger {
+  display: flex; /* show hamburger on mobile and place it left */
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  z-index: 130;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.hamburger span { display: block; height: 3px; background: var(--muted); border-radius: 3px; }
+.hamburger.open span { background: var(--blue); }
+
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 120;
+}
+
+nav.open {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10,12,14,0.98);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  z-index: 125;
+}
+
+nav.open a { font-size: 1.4rem; color: var(--white); }
+
 /* GitHub icon positioned at top-right of header */
 .header-github {
   position: absolute;
   right: 48px;
-  top: 50%;
+  top: 30%;
   transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
@@ -588,6 +652,9 @@ body {
 }
 
 @media (max-width: 768px) {
+  .hero{
+    padding: 0px 0px;
+  }
   .hero h1 {
     font-size: 2.5rem;
   }
@@ -607,8 +674,8 @@ body {
   }
 
   .site-header .logo {
-    flex: 0 0 100%;
-    text-align: center;
+    flex: 0 0 auto;
+    text-align: left;
     order: 1;
   }
 
@@ -621,7 +688,8 @@ body {
     padding: 8px 12px;
     flex-wrap: wrap;
     order: 2;
-    flex: 1;
+    flex: 1 1;
+    display: none;
   }
 
   .site-header nav a {
@@ -637,6 +705,12 @@ body {
   }
 
   .github-btn { padding: 8px 14px; }
+
+  .hamburger { display: flex; order: 1; }
+
+  /* center logo and place GitHub icon to the right */
+  .site-header .logo { order: 2; flex: 1 1; text-align: center; }
+  .header-github { position: relative; order: 3; right: auto; left: auto; top: auto; transform: none; margin-left: 0; margin-right: 8px; }
 
   .about, .contact {
     padding: 40px 24px;
@@ -801,6 +875,27 @@ body {
   gap: 16px;
   margin-bottom: 16px;
 }
+  /* mobile overlay: slide in from the right with fade */
+  nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 82%;
+    max-width: 420px;
+    background: rgba(10,12,14,0.98);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px 24px;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 360ms cubic-bezier(.2,.9,.2,1), opacity 360ms ease;
+    z-index: 125;
+  }
+
 
 .review-avatar {
   width: 56px;
