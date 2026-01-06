@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import ProjectCard from '../components/ProjectCard'
 import Skills from '../components/Skills'
+import Reviews from '../components/Reviews'
 
 const projects = [
   {
@@ -186,6 +187,8 @@ export default function Home() {
           ))}
         </motion.div>
       </motion.section>
+
+      <Reviews />
 
       <motion.section
         id="contact"
